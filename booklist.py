@@ -14,12 +14,6 @@ class BookList:
 
     def add_book(self,newbook):
 
-        self.book_title = input("Enter title")
-        self.book_author = input("Enter author")
-        self.book_pages = int(input("Enter pages"))
-
-        newbook = Book(self.book_title, self.book_author, self.book_pages,'r')
-
         self.booklists.append(newbook)
 
     def listbooks(self):
