@@ -6,11 +6,11 @@ BoxLayout:
         Button:
             id: required_book_button
             text: "List Required"
-            on_release: app.click_required_books()
+            on_release: app.select_required_books()
         Button:
             id: completed_book_button
             text: "List Completed"
-            on_release: app.click_completed_books()
+            on_release: app.select_completed_books()
         Label:
             id: add_book_button
             text: "Add new book"
@@ -51,15 +51,15 @@ BoxLayout:
     BoxLayout:
         orientation: "vertical"
         Label:
-            id: bookPages
+            id: book_pages
             size_hint_y: 0.1
             text: ""
-#            text: app.book_pages
+#
         BoxLayout:
-            id: entriesBox
+            id: box
             orientation: 'vertical'
         Label:
-            id: bookMsg
+            id: description
             size_hint_y: 0.1
             text: ""
-#            text: app.book_msg
+#

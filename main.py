@@ -1,3 +1,14 @@
+"""
+Name: Sudheer Paturi
+I.D: 13391146
+Started: Jan 21
+Completed: Jan 30
+Github: https://github.com/sd4483/CP1404Assignment2.git
+
+Reading List 2.0 - By Sudheer Paturi
+
+"""
+
 from kivy.app import App
 from kivy.app import Builder
 from book import Book
@@ -13,12 +24,61 @@ class ReadingListApp(App):
         self.book_items = book_items
         self.book_lists.listbooks()
 
+    def build(self):
+        self.title = "Reading List 2.0 by Sudheer Paturi"
+        self.root = Builder.load_file("app.kv")
+        return self.root
+
     def on_start(self):
-        self.create_books(way='req')
+        self.book_button(way='req')
         self.root.ids.required_book_button.state = 'down'
         self.root.ids.completed_book_button.state = 'normal'
 
-    def create_books(self, way):
+    def on_stop(self):
+        self.book_lists.save_books()
+
+    def add_books(self, text_title, text_author, text_pages):
+
+        try:
+            book_pages = int(text_pages)
+            if text_title=="" or text_author=="" or text_pages=="":
+                self.root.ids.description.text = "All fields must be completed"
+            elif book_pages < 0:
+                self.root.ids.description.text = "Pages must be positive number"
+                self.root.ids.text_pages.text = ""
+                self.root.ids.text_pages.value = ""
+            else:
+                self.book_lists.add_book(text_title,text_author,text_pages)
+                self.clear_text()
+                self.book_lists.sort_books()
+                self.on_start()
+                self.root.ids.description.text = "{} by {}, {} pages is added".format(text_title,text_author,text_pages)
+        except ValueError:
+            if text_title=="" or text_author=="" or text_pages=="":
+                self.root.ids.description.text = "All fields must be completed"
+            else:
+                self.root.ids.description.text = "Please enter a valid number"
+                self.root.ids.text_pages.text = ""
+                self.root.ids.text_pages.value = ""
+
+    def required_books(self, instance):
+        title = instance.text
+        for each in self.book_lists.booklists:
+            if each.title == title:
+                marking = self.book_items.mark_as_complete(each.status)
+                if marking == True:
+                    each.status = 'c'
+                self.on_start()
+                self.root.ids.description.text = "{} marked as completed".format(each.title)
+
+    def completed_books(self,instance):
+
+        title = instance.text
+        for each in self.book_lists.booklists:
+            if each.title == title:
+                self.root.ids.description.text = "{} (completed)".format(each)
+
+    def book_button(self, way):
         self.clear_books()
 
         if way == "req":
@@ -36,11 +96,11 @@ class ReadingListApp(App):
                     else:
                         temp_button.background_color = 0.8, 0.8, 0, 1
 
-                    self.root.ids.entriesBox.add_widget(temp_button)
+                    self.root.ids.box.add_widget(temp_button)
 
             total_required_pages = self.book_lists.requiredbooks_pages()
-            self.root.ids.bookPages.text = total_required_pages
-            self.root.ids.bookMsg.text = "Click book to mark them as completed"
+            self.root.ids.book_pages.text = total_required_pages
+            self.root.ids.description.text = "Click book to mark them as completed"
 
         elif way == "com":
 
@@ -50,78 +110,28 @@ class ReadingListApp(App):
                     temp_button = Button(text=self.book_lists[each].title)
                     temp_button.bind(on_release=self.completed_books)
                     temp_button.background_color = 0.37,0.37,0.37,1
-                    self.root.ids.entriesBox.add_widget(temp_button)
+                    self.root.ids.box.add_widget(temp_button)
             total_completed_pages = self.book_lists.completedbooks_pages()
-            self.root.ids.bookMsg.text = "Click book to show the description"
-            self.root.ids.bookPages.text = total_completed_pages
+            self.root.ids.description.text = "Click book to show the description"
+            self.root.ids.book_pages.text = total_completed_pages
 
-    def click_required_books(self):
-        self.create_books(way='req')
+    def select_required_books(self):
+        self.book_button(way='req')
         self.root.ids.required_book_button.state = 'down'
         self.root.ids.completed_book_button.state = 'normal'
 
-    def click_completed_books(self):
-        self.create_books(way='com')
+    def select_completed_books(self):
+        self.book_button(way='com')
         self.root.ids.required_book_button.state = 'normal'
         self.root.ids.completed_book_button.state = 'down'
 
-    def add_books(self, text_title, text_author, text_pages):
-
-        try:
-            book_pages = int(text_pages)
-            if text_title=="" or text_author=="" or text_pages=="":
-                self.root.ids.bookMsg.text = "All fields must be completed"
-            elif book_pages < 0:
-                self.root.ids.bookMsg.text = "Pages must be positive number"
-                self.root.ids.text_pages.text = ""
-                self.root.ids.text_pages.value = ""
-            else:
-                self.book_lists.add_book(text_title,text_author,text_pages)
-                self.clear_text()
-                self.book_lists.sort_books()
-                self.on_start()
-                self.root.ids.bookMsg.text = "{} by {}, {} pages is added".format(text_title,text_author,text_pages)
-        except ValueError:
-            if text_title=="" or text_author=="" or text_pages=="":
-                self.root.ids.bookMsg.text = "All fields must be completed"
-            else:
-                self.root.ids.bookMsg.text = "Please enter a valid number"
-                self.root.ids.text_pages.text = ""
-                self.root.ids.text_pages.value = ""
-
-    def required_books(self, instance):
-        title = instance.text
-        for each in self.book_lists.booklists:
-            if each.title == title:
-                marking = self.book_items.mark_as_complete(each.status)
-                if marking == True:
-                    each.status = 'c'
-                self.on_start()
-                self.root.ids.bookMsg.text = "{} marked as completed".format(each.title)
-
-    def completed_books(self,instance):
-
-        title = instance.text
-        for each in self.book_lists.booklists:
-            if each.title == title:
-                self.root.ids.bookMsg.text = "{} (completed)".format(each)
-
-
-
     def clear_books(self):
-        self.root.ids.entriesBox.clear_widgets()
+        self.root.ids.box.clear_widgets()
 
     def clear_text(self):
         self.root.ids.text_title.text = ""
         self.root.ids.text_author.text = ""
         self.root.ids.text_pages.text = ""
 
-    def build(self):
-        self.title = "Reading List 2.0"
-        self.root = Builder.load_file("app.kv")
-        return self.root
-
-    def on_stop(self):
-        self.book_lists.save_books()
 
 ReadingListApp().run()

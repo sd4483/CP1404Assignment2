@@ -1,26 +1,27 @@
-# create your BookList class in this file
-
 from book import Book
 from operator import attrgetter
 
 class BookList:
 
     def __init__(self):
-        booklists = []
+        """initializing the program"""
+        booklists = [] #created an open list
         self.booklists = booklists
 
     def __getitem__(self, item):
         return self.booklists[item]
 
     def __str__(self):
+        """used for testing test_booklist"""
         return self.booklists
 
     def add_book(self,title,author,pages):
+        """to add a new book"""
         newbook = Book(title,author,pages,'r')
         self.booklists.append(newbook)
 
     def listbooks(self):
-
+        """to read the csv file"""
         file_pointer = open("books.csv", 'r')
         for index, data in enumerate(file_pointer.readlines()):
             data = data.strip()
@@ -31,10 +32,12 @@ class BookList:
         return self.booklists
 
     def sort_books(self):
+        """sorting based title and author"""
         sort = self.booklists.sort(key=attrgetter('author', 'pages'))
         return sort
 
     def save_books(self):
+        """finally saves the books in csv file from booklists"""
         writer = open("books.csv", "w")
         for each in range(len(self.booklists)):
             item = self.booklists[each]
@@ -43,6 +46,7 @@ class BookList:
         writer.close()
 
     def requiredbooks_pages(self):
+        """to count number of pages to be read"""
         req_books_pages = 0
         for i in range(len(self.booklists)):
             if self.booklists[i].status == 'r':
@@ -52,6 +56,7 @@ class BookList:
         return total_req_book_pages
 
     def completedbooks_pages(self):
+        """to count number of pages completely read"""
         com_books_pages = 0
         for i in range(len(self.booklists)):
             if self.booklists[i].status == 'c':
@@ -61,6 +66,7 @@ class BookList:
         return total_com_book_pages
 
     def extraPages(self,pages):
+        """to check for extra pages, more than 500 or so"""
         if int(pages) > 500:
             return True
         else:
