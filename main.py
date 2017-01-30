@@ -94,9 +94,9 @@ class ReadingListApp(App):
                     page_check = self.book_lists.extraPages(self.book_lists[each].pages)
                     #checking length of pages
                     if page_check == True:
-                        temp_button.background_color = 0, 1, 1, 1
+                        temp_button.background_color = 1, 2, 1, 1
                     else:
-                        temp_button.background_color = 0.8, 0.8, 0, 1
+                        temp_button.background_color = 0, 0.8, 10, 1
 
                     self.root.ids.box.add_widget(temp_button)
 
@@ -109,7 +109,7 @@ class ReadingListApp(App):
                 if self.book_lists[each].status == 'c':
                     temp_button = Button(text=self.book_lists[each].title)
                     temp_button.bind(on_release=self.completed_books)
-                    temp_button.background_color = 0.37,0.37,0.37,1
+                    temp_button.background_color = 0,1.37,1.37,1
                     self.root.ids.box.add_widget(temp_button)
             total_completed_pages = self.book_lists.completedbooks_pages()
             self.root.ids.description.text = "Click book to show the description"
