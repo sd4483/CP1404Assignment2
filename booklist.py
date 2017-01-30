@@ -5,7 +5,8 @@ from operator import attrgetter
 
 class BookList:
 
-    def __init__(self,booklists=[]):
+    def __init__(self):
+        booklists = []
         self.booklists = booklists
 
     def __getitem__(self, item):
@@ -37,7 +38,7 @@ class BookList:
         writer = open("books.csv", "w")
         for each in range(len(self.booklists)):
             item = self.booklists[each]
-            each = "{}, {}, {}, {}\n" .format(item.title, item.author, item.pages,item.status)
+            each = "{},{},{},{}\n" .format(item.title,item.author,item.pages,item.status)
             writer.write(each)
         writer.close()
 
@@ -56,7 +57,7 @@ class BookList:
             if self.booklists[i].status == 'c':
                 count_pages = self.booklists[i].pages
                 com_books_pages += (int(count_pages))
-        total_com_book_pages = "Total pages to read: {}" .format(com_books_pages)
+        total_com_book_pages = "Total pages complete: {}" .format(com_books_pages)
         return total_com_book_pages
 
     def extraPages(self,pages):
