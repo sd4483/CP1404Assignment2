@@ -6,8 +6,13 @@ class Book:
                 self.author = author
                 self.pages = pages
                 self.status = status
-    def mark_completed(self):
-        self.status = "c"
+
+    def mark_as_complete(self,status):
+        if status == "r":
+            self.status = "c"
+            return True
+        elif status == "c":
+            return False
 
 
     def __str__(self):

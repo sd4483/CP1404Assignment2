@@ -14,7 +14,8 @@ book_list.listbooks()
 
 assert len(book_list.booklists) > 0  # assuming CSV file is not empty
 
-
+book_list.list_req_books()
+print(book_list)
 # test sorting books
 
 # test adding a new Book

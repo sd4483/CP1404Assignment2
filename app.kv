@@ -1,23 +1,65 @@
-# create your Kivy layout in the kv language here
 BoxLayout:
+
     BoxLayout:
-        orientation: "vertical"
-        size_hint: 0.5,0.5
+        orientation: 'vertical'
+        size_hint_x: 0.3
         Button:
+            id: required_book_button
             text: "List Required"
+            on_release: app.click_required_books()
         Button:
+            id: completed_book_button
             text: "List Completed"
+            on_release: app.click_completed_books()
+        Label:
+            id: add_book_button
+            text: "Add new book"
+        Label:
+            text: "Book Title:"
+        TextInput:
+            id: text_title
+            value: ''
+            size_hint_y: None
+            height: '48dp'
+            multiline: False
+            write_tab: False
+        Label:
+            text: "Book Author:"
+        TextInput:
+            id: text_author
+            value: ''
+            size_hint_y: None
+            height: '48dp'
+            multiline: False
+            write_tab: False
+        Label:
+            text: "Book Pages"
+        TextInput:
+            id: text_pages
+            value: ''
+            size_hint_y: None
+            height: '48dp'
+            multiline: False
+            write_tab: False
         Button:
-            text: "Add New Book"
+            text: "Add Book"
+            on_release: app.add_books(text_title.text,text_author.text,text_pages.text)
         Button:
-            text: "Title"
-        Button:
-            text: "Author"
-        Button:
-            text: "Pages"
-
-
+            text: "Clear"
+            on_release: app.clear_text()
 
     BoxLayout:
         orientation: "vertical"
-        id: entriesBox
+        Label:
+            id: bookPages
+            size_hint_y: 0.1
+            text: ""
+#            text: app.book_pages
+        BoxLayout:
+            id: entriesBox
+            orientation: 'vertical'
+        Label:
+            id: bookMsg
+            size_hint_y: 0.1
+            text: ""
+#            text: app.book_msg
